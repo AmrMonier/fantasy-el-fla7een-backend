@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.string('name')
       table.string('username').unique()
       table.string('password').notNullable()
-
+      table.boolean('is_admin').defaultTo(false)
       /*
        * Uses timestampz for PostgreSQL and DATETIME2 for MSSQL
        */
