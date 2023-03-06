@@ -1,10 +1,8 @@
-import { Exception } from '@adonisjs/core/build/standalone'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 import LoginValidator from 'App/Validators/Auth/LoginValidator'
 import SignupValidator from 'App/Validators/Auth/SignupValidator'
 import Http from 'App/Utils/Http'
-import Hash from '@ioc:Adonis/Core/Hash'
 import UnauthorizedException from 'App/Exceptions/UnauthorizedException'
 
 export default class AuthenticationController {

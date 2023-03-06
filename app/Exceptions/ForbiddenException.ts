@@ -14,8 +14,8 @@ import { Exception } from '@poppinss/utils'
 |
 */
 export default class ForbiddenException extends Exception {
-  constructor(message: string) {
-    super(message, 403)
+  constructor(message?: string) {
+    super(message || 'Forbidden', 403)
   }
 
   /**

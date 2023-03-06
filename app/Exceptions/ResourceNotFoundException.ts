@@ -14,8 +14,8 @@ import { Exception } from '@poppinss/utils'
 |
 */
 export default class ResourceNotFoundException extends Exception {
-  constructor(message: string) {
-    super(message, 404)
+  constructor(message?: string) {
+    super(message || 'E_ROW_NOT_FOUND: Row not found', 404)
   }
 
   /**

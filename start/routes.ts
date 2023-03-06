@@ -28,3 +28,14 @@ Route.group(() => {
   Route.post('signup', 'AuthenticationController.signup')
   Route.post('login', 'AuthenticationController.login')
 }).prefix('auth')
+
+Route.group(() => {
+  Route.post('', 'PlayersController.create')
+  Route.get('', 'PlayersController.index')
+  Route.post(':id', 'PlayersController.show')
+  Route.put(':id', 'PlayersController.update')
+  Route.patch(':id', 'PlayersController.update')
+  Route.delete(':id', 'PlayersController.destroy')
+})
+  .prefix('api/players')
+  .middleware(['auth', 'is-admin'])
