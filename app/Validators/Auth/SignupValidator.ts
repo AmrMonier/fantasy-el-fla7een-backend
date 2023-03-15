@@ -1,53 +1,32 @@
-import { schema, CustomMessages, rules } from '@ioc:Adonis/Core/Validator'
-import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { rules, schema } from '@ioc:Adonis/Core/Validator'
 import User from 'App/Models/User'
 
-export default class SignupValidator {
-  constructor(protected ctx: HttpContextContract) {}
-
-  /*
-   * Define schema to validate the "shape", "type", "formatting" and "integrity" of data.
-   *
-   * For example:
-   * 1. The username must be of data type string. But then also, it should
-   *    not contain special characters or numbers.
-   *    ```
-   *     schema.string({}, [ rules.alpha() ])
-   *    ```
-   *
-   * 2. The email must be of data type string, formatted as a valid
-   *    email. But also, not used by any other user.
-   *    ```
-   *     schema.string({}, [
-   *       rules.email(),
-   *       rules.unique({ table: 'users', column: 'email' }),
-   *     ])
-   *    ```
-   */
+export default class RegisterValidator {
   public schema = schema.create({
-    name: schema.string({ trim: true }, [
-      rules.required(),
-      rules.minLength(3),
-      rules.maxLength(30),
-    ]),
-    username: schema.string({ trim: true }, [
-      rules.required(),
+    name: schema.string(),
+    username: schema.string({}, [
       rules.unique({ table: User.table, column: 'username' }),
-      rules.alphaNum({ allow: ['dash', 'underscore'] }),
+      rules.alpha({
+        allow: ['dash'],
+      }),
     ]),
-    password: schema.string({}, [rules.required(), rules.confirmed(), rules.minLength(8)]),
+    phone: schema.string({}, [rules.mobile()]),
+    password: schema.string({}, [
+      rules.regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/),
+      rules.confirmed(),
+    ]),
   })
 
-  /**
-   * Custom messages for validation failures. You can make use of dot notation `(.)`
-   * for targeting nested fields and array expressions `(*)` for targeting all
-   * children of an array. For example:
-   *
-   * {
-   *   'profile.username.required': 'Username is required',
-   *   'scores.*.number': 'Define scores as valid numbers'
-   * }
-   *
-   */
-  public messages: CustomMessages = {}
+  public messages = {
+    'name.required': 'Your name is required',
+    'username.alpha': 'The username can only contain letters, dashes, and underscores',
+    'username.required': 'The username is required',
+    'phone.required': 'Your phone number is required',
+    'phone.mobile': 'The phone number must be a valid Egyptian phone number',
+    'password.required': 'The password is required',
+    'password.regex':
+      'The password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one number',
+    'password_confirmation.required': 'The password confirmation is required',
+    'password_confirmation.confirmed': 'The passwords do not match',
+  }
 }

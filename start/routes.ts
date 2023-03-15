@@ -30,12 +30,11 @@ Route.group(() => {
 }).prefix('auth')
 
 Route.group(() => {
-  Route.post('', 'PlayersController.create')
-  Route.get('', 'PlayersController.index')
-  Route.post(':id', 'PlayersController.show')
-  Route.put(':id', 'PlayersController.update')
-  Route.patch(':id', 'PlayersController.update')
-  Route.delete(':id', 'PlayersController.destroy')
+  Route.get('/', 'PlayersController.index')
+  Route.post('/', 'PlayersController.store')
+  Route.get('/:id', 'PlayersController.show')
+  Route.put('/:id', 'PlayersController.update')
+  Route.delete('/:id', 'PlayersController.destroy')
 })
   .prefix('api/players')
   .middleware(['auth', 'is-admin'])
