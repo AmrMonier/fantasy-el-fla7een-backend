@@ -7,8 +7,8 @@ import UnauthorizedException from 'App/Exceptions/UnauthorizedException'
 
 export default class AuthenticationController {
   public async signup({ request, auth }: HttpContextContract) {
-    const { name, password, username } = await request.validate(SignupValidator)
-    const user = await User.create({ name, password, username })
+    const { name, password, username, phone } = await request.validate(SignupValidator)
+    const user = await User.create({ name, password, username, phone })
     const token = await auth.login(user)
     return Http.respond({ message: 'Account Created Successfully', data: { user, token } })
   }

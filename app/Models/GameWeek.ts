@@ -3,34 +3,49 @@ import {
   BaseModel,
   BelongsTo,
   HasMany,
-  HasManyThrough,
+  ManyToMany,
   belongsTo,
   column,
   hasMany,
-  hasManyThrough,
+  manyToMany,
 } from '@ioc:Adonis/Lucid/Orm'
 import GamePlayer from './GamePlayer'
-import GameWeek from './GameWeek'
+import Player from './Player'
 import League from './League'
 
-export default class Player extends BaseModel {
+export default class GameWeek extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
   @column()
-  public name: string
+  public gameWeekNumber: number
 
   @column()
-  public position: string
+  public teamSize: number
+
+  @column()
+  public teamBName: string
+
+  @column()
+  public teamAName: string
+
+  @column()
+  public teamAScore: number
+
+  @column()
+  public teamBScore: number
+
+  @column()
+  public startDate: DateTime
+
+  @column()
+  public location: string
+
+  @column()
+  public finished: boolean
 
   @column()
   public leagueId: number
-
-  @column()
-  public price: number
-
-  @column()
-  public active: boolean
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -39,15 +54,7 @@ export default class Player extends BaseModel {
   public updatedAt: DateTime
 
   @hasMany(() => GamePlayer)
-  public gamesStats: HasMany<typeof GamePlayer>
-
-  @hasManyThrough([() => GameWeek, () => GamePlayer], {
-    foreignKey: 'playerId',
-    throughForeignKey: 'gameWeekId',
-    throughLocalKey: 'id',
-    localKey: 'id',
-  })
-  public players: HasManyThrough<typeof GameWeek>
+  public gamePlayers: HasMany<typeof GamePlayer>
 
   @belongsTo(() => League)
   public league: BelongsTo<typeof League>

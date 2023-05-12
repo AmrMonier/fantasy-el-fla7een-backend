@@ -1,23 +1,16 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
-import Position from 'App/Models/Position'
 
 export default class extends BaseSchema {
-  protected tableName = 'points_sheets'
+  protected tableName = 'leagues'
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.integer('position_id')
-      table.float('goal')
-      table.float('assest')
-      table.float('saves')
-      table.float('win_bonus')
-      table
-        .foreign('position_id')
-        .references('id')
-        .inTable(Position.table)
-        .onDelete('CASCADE')
-        .onUpdate('CASCADE')
+      table.string('name')
+      table.date('start_date')
+      table.date('end_date')
+      table.boolean('is_completed').defaultTo(false)
+
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

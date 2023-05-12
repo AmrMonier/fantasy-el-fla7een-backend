@@ -30,12 +30,36 @@ Route.group(() => {
 }).prefix('auth')
 
 Route.group(() => {
-  Route.post('', 'PlayersController.create')
-  Route.get('', 'PlayersController.index')
-  Route.post(':id', 'PlayersController.show')
-  Route.put(':id', 'PlayersController.update')
-  Route.patch(':id', 'PlayersController.update')
-  Route.delete(':id', 'PlayersController.destroy')
-})
-  .prefix('api/players')
-  .middleware(['auth', 'is-admin'])
+  Route.group(() => {
+    Route.get('/', 'PlayersController.index')
+    Route.post('/', 'PlayersController.store')
+    Route.get('/:id', 'PlayersController.show')
+    Route.patch('/:id', 'PlayersController.update')
+    Route.delete('/:id', 'PlayersController.destroy')
+  }).prefix('api/players')
+
+  Route.group(() => {
+    Route.get('', 'GameWeeksController.index')
+    Route.get('/:id', 'GameWeeksController.show')
+    Route.post('', 'GameWeeksController.store')
+    Route.patch('/:id', 'GameWeeksController.update')
+    Route.delete('/:id', 'GameWeeksController.destroy')
+    Route.post('/:id/submit-score', 'GameWeeksController.submitScores')
+
+    Route.group(() => {
+      Route.post('', 'GamePlayersController.store')
+      Route.get('', 'GamePlayersController.index')
+      Route.get('/:playerId', 'GamePlayersController.show')
+      Route.patch('/:playerId', 'GamePlayersController.update')
+      Route.delete('/:playerId', 'GamePlayersController.destroy')
+    }).prefix('/:weekId/players')
+  }).prefix('api/game-weeks')
+
+  Route.group(() => {
+    Route.get('/', 'PointsSheetController.index')
+    Route.post('/', 'PointsSheetController.store')
+    Route.get('/:id', 'PointsSheetController.show')
+    Route.patch('/:id', 'PointsSheetController.update')
+    Route.delete('/:id', 'PointsSheetController.destroy')
+  }).prefix('/api/points-sheet')
+}).middleware(['auth', 'is-admin'])
