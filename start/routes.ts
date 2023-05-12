@@ -44,6 +44,7 @@ Route.group(() => {
     Route.post('', 'GameWeeksController.store')
     Route.patch('/:id', 'GameWeeksController.update')
     Route.delete('/:id', 'GameWeeksController.destroy')
+    Route.post('/:id/submit-score', 'GameWeeksController.submitScores')
 
     Route.group(() => {
       Route.post('', 'GamePlayersController.store')

@@ -10,6 +10,7 @@ export default class Users extends BaseSchema {
       table.string('username').notNullable().unique()
       table.string('phone').notNullable().unique()
       table.string('password').notNullable()
+      table.boolean('is_admin').defaultTo(false)
       table.timestamps(true, true)
     })
   }

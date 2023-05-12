@@ -1,7 +1,17 @@
 import { DateTime } from 'luxon'
-import { BaseModel, HasMany, ManyToMany, column, hasMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
+import {
+  BaseModel,
+  BelongsTo,
+  HasMany,
+  ManyToMany,
+  belongsTo,
+  column,
+  hasMany,
+  manyToMany,
+} from '@ioc:Adonis/Lucid/Orm'
 import GamePlayer from './GamePlayer'
 import Player from './Player'
+import League from './League'
 
 export default class GameWeek extends BaseModel {
   @column({ isPrimary: true })
@@ -34,6 +44,9 @@ export default class GameWeek extends BaseModel {
   @column()
   public finished: boolean
 
+  @column()
+  public leagueId: number
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
@@ -42,4 +55,7 @@ export default class GameWeek extends BaseModel {
 
   @hasMany(() => GamePlayer)
   public gamePlayers: HasMany<typeof GamePlayer>
+
+  @belongsTo(() => League)
+  public league: BelongsTo<typeof League>
 }

@@ -2,7 +2,7 @@ import { schema, CustomMessages, rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import GamePlayer from 'App/Models/GamePlayer'
 
-export default class UpdateGameWeekValidator {
+export default class SubmitGameWeekScoreValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   /*
@@ -25,12 +25,26 @@ export default class UpdateGameWeekValidator {
    *    ```
    */
   public schema = schema.create({
-    start_date: schema.date.optional({ format: 'yyyy-MM-dd' }),
-    team_size: schema.number.optional(),
-    location: schema.string.optional(),
-    team_a_name: schema.string.optional(),
-    team_b_name: schema.string.optional(),
-    finished: schema.boolean.optional(),
+    team_a_score: schema.number([rules.unsigned()]),
+    team_b_score: schema.number([rules.unsigned()]),
+
+    players: schema.array().members(
+      schema.object().members({
+        player_id: schema.number([
+          rules.exists({
+            table: GamePlayer.table,
+            column: 'player_id',
+            where: {
+              game_week_id: this.ctx.params.id,
+            },
+          }),
+        ]),
+        goals: schema.number.optional([rules.unsigned()]),
+        assists: schema.number.optional([rules.unsigned()]),
+        saves: schema.number.optional([rules.unsigned()]),
+        penalty_saves: schema.number.optional([rules.unsigned()]),
+      })
+    ),
   })
 
   /**
